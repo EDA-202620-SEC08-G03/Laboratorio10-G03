@@ -11,12 +11,12 @@ def new_map(num_elements, load_factor, prime=109345121):
     mapa = {
         'prime': prime,
         'capacity': capacidad,
-        'scale': random.randint(1, prime - 1),
-        'shift': random.randint(0, prime - 1),
+        'scale': 1,
+        'shift': 0,
         'table': tabla,
+        'current_factor': 0,
         'limit_factor': load_factor,
-        'size': 0,
-        'current_factor': 0
+        'size': 0
     }
     return mapa
 
@@ -69,6 +69,8 @@ def put(map, key, value):
         al.change_info(map["table"], first_avail, new_entry)
         map["size"] += 1
         map["current_factor"] = map["size"] / map["capacity"]
+        
+    return map
     
 def get(map, key):
     pos = hash_value(map, key)
