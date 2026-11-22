@@ -28,9 +28,13 @@
 #  Importaciones
 # ___________________________________________________
 
+from re import search
+
 from DataStructures.List import single_linked_list as lt
 from DataStructures.Map import map_linear_probing as m
 from DataStructures.Graph import digraph as G
+from DataStructures.Graph import dfs
+from DataStructures.List import array_list as al
 
 import csv
 import time
@@ -136,14 +140,16 @@ def total_stops(analyzer):
     """
     Total de paradas de autobus en el grafo
     """
-    # TODO: Retorne el número de vértices del grafo
+
+    return G.order(analyzer['connections'])
 
 
 def total_connections(analyzer):
     """
     Total de enlaces entre las paradas
     """
-    # TODO: Retorne el número de arcos del grafo de conexiones
+
+    return G.size(analyzer['connections'])
 
 
 # Funciones para la medición de tiempos
@@ -251,23 +257,50 @@ def get_most_concurrent_stops(analyzer):
     """
     Obtiene las 5 paradas más concurridas
     """
-    # TODO: Obtener las 5 paradas más concurridas, es decir, con más arcos salientes
-    ...
+
+    graph = analyzer['connections']
+
+    vertices = G.vertices(graph)
+
+    resultado = al.new_list()
+
+    for i in range(al.size(vertices)):
+
+        vertex = al.get_element(vertices, i)
+
+        concurrencia = G.degree(graph, vertex)
+
+        al.add_last(resultado, {
+            "stop": vertex,
+            "degree": concurrencia
+        })
+
+    def sort_criteria(stop1, stop2):
+        return stop1["degree"] > stop2["degree"]
+
+    resultado = al.merge_sort(resultado, sort_criteria)
+
+    top5 = al.sub_list(resultado, 0, min(5, al.size(resultado)))
+
+    return top5
 
 def get_route_between_stops_dfs(analyzer, stop1, stop2):
     """
     Obtener la ruta entre dos parada usando dfs
     """
     # TODO: Obtener la ruta entre dos parada usando dfs
-    ...
+    search = dfs.dfs(
+    analyzer["connections"],
+    stop1
+)
+
+    return dfs.path_to(search, stop2)
 
 def get_route_between_stops_bfs(analyzer, stop1, stop2):
     """
     Obtener la ruta entre dos parada usando bfs
     """
-    # TODO: Obtener la ruta entre dos parada usando bfs
-    ...
-
+    
 def get_shortest_route_between_stops(analyzer, stop1, stop2):
     """
     Obtener la ruta mínima entre dos paradas

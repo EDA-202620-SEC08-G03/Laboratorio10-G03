@@ -87,3 +87,22 @@ def edges_vertex (my_graph, key_u):
 def get_vertex (my_graph, key_u):
     
     return lp.get(my_graph["vertices"], key_u)
+
+def update_vertex_info(my_graph, key_u, info_u):
+
+    if not contains_vertex(my_graph, key_u):
+        raise Exception("El vertice no existe")
+
+    vertex = get_vertex(my_graph, key_u)
+    vtx.set_value(vertex, info_u)
+
+    return my_graph
+
+def get_vertex_information(my_graph, key_u):
+
+    if not contains_vertex(my_graph, key_u):
+        raise Exception("El vertice no existe")
+
+    vertex = get_vertex(my_graph, key_u)
+
+    return vtx.get_value(vertex)
