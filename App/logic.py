@@ -216,10 +216,29 @@ def add_route_stop(analyzer, service):
     """
     Agrega a una estacion, una ruta que es servida en ese paradero
     """
-    stop_info = m.get(analyzer['stops'], service['BusStopCode'])
+
+    stop_info = m.get(
+        analyzer['stops'],
+        service['BusStopCode']
+    )
+
     stop_services = stop_info['services']
-    if lt.is_present(stop_services, service['ServiceNo'], lt.default_function) == -1:
-        lt.add_last(stop_services, service['ServiceNo'])
+
+    def compare_services(service1, service2):
+        if service1 == service2:
+            return 0
+        return 1
+
+    if lt.is_present(
+        stop_services,
+        service['ServiceNo'],
+        compare_services
+    ) == -1:
+
+        lt.add_last(
+            stop_services,
+            service['ServiceNo']
+        )
 
     return analyzer
 
